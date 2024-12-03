@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>格斗游戏</title>
+    <style>
+        #gameCanvas {
+            border: 2px solid black;
+            background-color: #87CEEB;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            touch-action: none;
+        }
+        #mobileControls {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            padding: 10px;
+        }
+        #joystick {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            touch-action: none;
+        }
+        #joystickKnob {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            top: 30px;
+            left: 30px;
+        }
+        #attackButton {
+            position: fixed;
+            bottom: 50px;
+            right: 50px;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 0, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+        }
+        #jumpButton {
+            position: fixed;
+            bottom: 50px;
+            right: 130px;
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 255, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
+    <div id="mobileControls">
+        <div id="joystick">
+            <div id="joystickKnob"></div>
+        </div>
+        <div id="jumpButton">跳跃</div>
+        <div id="attackButton">攻击</div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
