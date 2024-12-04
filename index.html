@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="ScreenOrientation" content="autoRotate:disabled">
     <title>格斗游戏</title>
     <style>
         #gameCanvas {
             border: 2px solid black;
             background-color: #87CEEB;
+            max-width: 100%;
+            max-height: 100vh;
         }
         body {
             display: flex;
@@ -18,6 +21,7 @@
             margin: 0;
             background-color: #f0f0f0;
             touch-action: none;
+            overflow: hidden;
         }
         #mobileControls {
             display: none;
@@ -126,6 +130,13 @@
             from { transform: rotate(0deg); }
             to { transform: rotate(90deg); }
         }
+
+        @media screen and (orientation: landscape) {
+            #gameCanvas {
+                width: 100vw;
+                height: 100vh;
+            }
+        }
     </style>
 </head>
 <body>
@@ -158,30 +169,50 @@
         const startPrompt = document.getElementById('startPrompt');
         const startButton = document.getElementById('startButton');
         const rotatePrompt = document.querySelector('.rotate-prompt');
+        const gameCanvas = document.getElementById('gameCanvas');
 
         if (isMobile) {
             startPrompt.style.display = 'flex';
             
-            window.addEventListener('orientationchange', checkOrientation);
-            window.addEventListener('resize', checkOrientation);
+            async function lockLandscape() {
+                try {
+                    if (screen.orientation && screen.orientation.lock) {
+                        await screen.orientation.lock('landscape');
+                    }
+                } catch (e) {
+                    console.log('无法锁定屏幕方向:', e);
+                }
+            }
 
-            startButton.addEventListener('click', () => {
+            function resizeCanvas() {
+                const width = window.innerWidth;
+                const height = window.innerHeight;
+                gameCanvas.width = width;
+                gameCanvas.height = height;
+            }
+
+            startButton.addEventListener('click', async () => {
                 if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen();
+                    await document.documentElement.requestFullscreen();
                 } else if (document.documentElement.webkitRequestFullscreen) {
-                    document.documentElement.webkitRequestFullscreen();
+                    await document.documentElement.webkitRequestFullscreen();
                 }
                 
+                await lockLandscape();
+                
+                resizeCanvas();
+                
                 startPrompt.style.display = 'none';
-                checkOrientation();
+                
+                document.getElementById('mobileControls').style.display = 'block';
             });
+
+            window.addEventListener('resize', resizeCanvas);
         }
 
         function checkOrientation() {
             if (window.innerHeight > window.innerWidth) {
-                rotatePrompt.style.display = 'flex';
-            } else {
-                rotatePrompt.style.display = 'none';
+                lockLandscape();
             }
         }
     </script>
